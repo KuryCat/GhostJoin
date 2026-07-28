@@ -1,5 +1,5 @@
 """
-mc_afk_bot.py
+ghostjoin.py
 -------------
 Script kết nối vào server Minecraft (chế độ OFFLINE / cracked, không cần đăng nhập Mojang)
 và giữ kết nối sống để server hiển thị người chơi đã vào.
