@@ -1,4 +1,4 @@
-# mc-afk-bot-tester
+# GhostJoin
 
 Một Minecraft (Java Edition) protocol client tối giản viết bằng Python thuần
 (chỉ dùng thư viện chuẩn: `socket`, `struct`, `hashlib`, `zlib`) — kết nối vào
