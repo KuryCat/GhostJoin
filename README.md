@@ -1,64 +1,65 @@
 # GhostJoin
 
-Một Minecraft (Java Edition) protocol client tối giản viết bằng Python thuần
-(chỉ dùng thư viện chuẩn: `socket`, `struct`, `hashlib`, `zlib`) — kết nối vào
-server, đi hết luồng Handshake → Login → Configuration → Play, và giữ kết nối
-sống bằng cách phản hồi Keep Alive.
+A minimal Minecraft (Java Edition) protocol client written in pure Python
+(standard library only: `socket`, `struct`, `hashlib`, `zlib`) — connects to
+a server, walks through the full Handshake → Login → Configuration → Play
+flow, and keeps the connection alive by responding to Keep Alive packets.
 
-## Mục đích
+## Purpose
 
-Repo này được viết ra để **kiểm thử hệ thống chống bot (anti-bot) của một
-server Minecraft do chính bạn quản lý, hoặc server mà bạn đã được chủ sở hữu
-cho phép rõ ràng**. Nó mô phỏng một kết nối client ở mức protocol (không có
-logic render, vật lý, hay tương tác trong game) — hữu ích để kiểm tra xem hệ
-thống chống bot của server có phát hiện và chặn được các kết nối "trần"
-kiểu này hay không.
+This repo was built to **test the anti-bot system of a Minecraft server you
+own, or a server whose owner has explicitly authorized this kind of
+testing**. It simulates a client connection at the protocol level (no
+rendering, physics, or in-game interaction logic) — useful for checking
+whether a server's anti-bot system can detect and block this kind of "bare"
+connection.
 
-Trong quá trình phát triển, script này từng bị một server thật chặn đúng ở
-bước cuối của Configuration state (server chỉ lặp lại Keep Alive, không bao
-giờ gửi Finish Configuration) — đây là ví dụ thực tế của việc một hệ thống
-anti-bot phát hiện và giữ kết nối "nghi ngờ" ở trạng thái lấp lửng thay vì từ
-chối thẳng. Ghi lại ở đây để làm tài liệu tham khảo khi bạn kiểm thử.
+During development, this script was actually blocked by a real server right
+at the last step of the Configuration state (the server just kept looping
+Keep Alive packets and never sent Finish Configuration) — a real-world
+example of an anti-bot system flagging a "suspicious" connection and leaving
+it in limbo instead of rejecting it outright. Documented here as a reference
+for your own testing.
 
-## Giới hạn
+## Limitations
 
-- **Chỉ hoạt động với server offline-mode** (`online-mode=false`). Server bật
-  xác thực Mojang/Microsoft cần Encryption Request + session token hợp lệ,
-  không nằm trong phạm vi script này.
-- Packet ID trong Minecraft Protocol thay đổi khá thường xuyên giữa các bản.
-  ID trong script này lấy theo protocol ~773–776 (gần bản 26.1.2 tại thời
-  điểm viết). Bật `DEBUG = True` trong file để in ra mọi packet ID nhận được
-  và tự đối chiếu tại
+- **Only works with offline-mode servers** (`online-mode=false`). Servers
+  with Mojang/Microsoft authentication enabled require an Encryption Request
+  + valid session token, which is outside the scope of this script.
+- Minecraft Protocol packet IDs change fairly often between versions. The
+  IDs in this script are based on protocol ~773–776 (close to version 26.1.2
+  at the time of writing). Set `DEBUG = True` in the file to print every
+  received packet ID and cross-check it against
   [minecraft.wiki/w/Java_Edition_protocol/Packets](https://minecraft.wiki/w/Java_Edition_protocol/Packets)
-  nếu server bạn dùng bản khác.
-- Không có logic render/vật lý/tương tác — client chỉ "đứng yên" ở Play
-  state. Nếu bạn cần mô phỏng hành vi di chuyển/hành động để kiểm thử kỹ hơn,
-  cần tự bổ sung thêm.
+  if your server runs a different version.
+- No render/physics/interaction logic — the client just "stands still" once
+  in the Play state. If you need to simulate movement/actions for deeper
+  testing, you'll need to extend it yourself.
 
-## Cách dùng
+## Usage
 
 ```bash
 python ghostjoin.py <host> <port> <username> [protocol_version]
 ```
 
-Ví dụ:
+Example:
 
 ```bash
 python ghostjoin.py 127.0.0.1 25565 TestBot 775
 ```
 
-## Lưu ý sử dụng có trách nhiệm
+## Responsible use
 
-- Chỉ chạy trên server của bạn, hoặc server mà chủ sở hữu **đã đồng ý rõ
-  ràng** cho việc kiểm thử này.
-- Không dùng để tạo số lượng lớn kết nối giả nhằm gây quá tải server (DoS),
-  thao túng số liệu người chơi hiển thị công khai, hay né tránh các biện
-  pháp bảo vệ mà bạn không có quyền vượt qua.
-- Nếu hệ thống chống bot của server chặn được script này — đó là kết quả
-  kiểm thử mong muốn, không phải lỗi cần "vá" để vượt qua bằng mọi giá.
+- Only run this against your own server, or a server whose owner has
+  **explicitly agreed** to this kind of testing.
+- Do not use it to spin up large numbers of fake connections to overload a
+  server (DoS), manipulate publicly displayed player counts, or bypass
+  protections you don't have permission to bypass.
+- If a server's anti-bot system successfully blocks this script — that's the
+  intended test outcome, not a bug to be "patched around" at all costs.
 
-## Giấy phép
+## License
 
-Xem file [LICENSE](./LICENSE). Được phép tự do sử dụng, sao chép, chỉnh sửa,
-phân phối lại; phần mềm được cung cấp "nguyên trạng", tác giả không chịu
-trách nhiệm cho bất kỳ hậu quả nào phát sinh từ việc sử dụng hoặc lạm dụng.
+See the [LICENSE](./LICENSE) file. Free to use, copy, modify, and
+redistribute; the software is provided "as is" — the authors take no
+responsibility for any consequences arising from its use or misuse.
