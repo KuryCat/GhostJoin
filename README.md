@@ -38,13 +38,13 @@ chối thẳng. Ghi lại ở đây để làm tài liệu tham khảo khi bạn
 ## Cách dùng
 
 ```bash
-python mc_afk_bot.py <host> <port> <username> [protocol_version]
+python ghostjoin.py <host> <port> <username> [protocol_version]
 ```
 
 Ví dụ:
 
 ```bash
-python mc_afk_bot.py 127.0.0.1 25565 TestBot 775
+python ghostjoin.py 127.0.0.1 25565 TestBot 775
 ```
 
 ## Lưu ý sử dụng có trách nhiệm
