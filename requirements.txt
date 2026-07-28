@@ -1,0 +1,9 @@
+# GhostJoin requires NO external packages!
+# Everything uses Python's built-in standard library:
+# - socket
+# - struct
+# - hashlib
+# - zlib
+# - sys
+#
+# Just run: python ghostjoin.py <host> <port> <username> [protocol_version]
