@@ -18,7 +18,7 @@ LƯU Ý QUAN TRỌNG:
   chiếu với https://minecraft.wiki/w/Java_Edition_protocol/Packets
 
 Cách dùng:
-    python mc_afk_bot.py <host> <port> <username> [protocol_version]
+    python ghostjoin.py <host> <port> <username> [protocol_version]
 """
 
 import hashlib
@@ -263,7 +263,7 @@ def connect_and_join(host: str, port: int, username: str, protocol_version: int)
 
 if __name__ == "__main__":
     if len(sys.argv) < 4:
-        print("Cách dùng: python mc_afk_bot.py <host> <port> <username> [protocol_version]")
+        print("Cách dùng: python ghostjoin <host> <port> <username> [protocol_version]")
         sys.exit(1)
 
     host_arg = sys.argv[1]
